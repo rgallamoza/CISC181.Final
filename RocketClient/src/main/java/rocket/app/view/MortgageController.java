@@ -13,7 +13,10 @@ import rocketData.LoanRequest;
 
 public class MortgageController {
 
+	@FXML TextField txtIncome;
+	@FXML TextField txtExpenses;
 	@FXML TextField txtCreditScore;
+	@FXML TextField txtHouseCost;
 	@FXML TextField txtMortgageAmt;
 	
 	private TextField txtNew;

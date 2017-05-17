@@ -6,12 +6,13 @@ import org.apache.poi.ss.formula.functions.*;
 
 import exceptions.RateException;
 import rocketDomain.RateDomainModel;
+import java.util.function.Function;
 
 public class RateBLL {
 
 	private static RateDAL _RateDAL = new RateDAL();
 	
-	static double getRate(int GivenCreditScore) throws RateException 
+	public static double getRate(int GivenCreditScore) throws RateException 
 	{
 		double dInterestRate = 0;
 		
@@ -35,6 +36,16 @@ public class RateBLL {
 		//
 		//	Example... how to use Lambda functions:
 		//			https://github.com/CISC181/Lambda
+		
+		Function<RateDomainModel, Double> filterRates = r -> {
+			if(r.getiMinCreditScore()<=GivenCreditScore){
+				return r.getdInterestRate();
+			}
+			else{
+				return null;
+			}
+		};
+		
 		
 		return dInterestRate;
 		
