@@ -38,15 +38,23 @@ public class RateBLL {
 		//	Example... how to use Lambda functions:
 		//			https://github.com/CISC181/Lambda
 		
-		rates.stream().filter(r -> r.getiMinCreditScore()<=GivenCreditScore).collect(Collectors.toList());
+		//rates.stream().filter(r -> r.getiMinCreditScore()>=GivenCreditScore).collect(Collectors.toList());
 		
-		if(rates.isEmpty()){
+		ArrayList<RateDomainModel> newRates = new ArrayList<RateDomainModel>();
+		
+		for(RateDomainModel r:rates){
+			if(r.getiMinCreditScore()<=GivenCreditScore){
+				newRates.add(r);
+			}
+		}
+		
+		if(newRates.isEmpty()){
 			RateDomainModel rde = new RateDomainModel();
 			rde.setiMinCreditScore(GivenCreditScore);
 			throw new RateException(rde);
 		}
 		else{
-			dInterestRate = rates.get(0).getdInterestRate();
+			dInterestRate = newRates.get(0).getdInterestRate();
 		}
 		
 		return dInterestRate;

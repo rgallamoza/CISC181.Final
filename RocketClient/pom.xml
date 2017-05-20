@@ -20,13 +20,14 @@
 			<plugin>
 				<groupId>com.zenjava</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
-				<version>1.3</version>
+				<version>8.6.0</version>
 				<configuration>
-					<mainClass>poker.app.MainApp</mainClass>
+					<source>1.8</source>
+					<target>1.8</target>
+					<mainClass>rocket.app.MainApp</mainClass>
+					<nativeInstallers />
 				</configuration>
 			</plugin>
-
-
 		</plugins>
 	</build>
 
@@ -70,7 +71,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -164,4 +165,3 @@
 
 
 </project>
-

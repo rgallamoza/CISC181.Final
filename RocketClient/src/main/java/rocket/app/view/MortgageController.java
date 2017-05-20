@@ -3,6 +3,7 @@ package rocket.app.view;
 import org.apache.poi.ss.formula.functions.FinanceLib;
 
 import eNums.eAction;
+import exceptions.RateException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -65,7 +66,13 @@ public class MortgageController {
 		double downPayment = Double.parseDouble(txtDownPayment.getCharacters().toString());
 		double mortgageTerm = cmbTerm.getButtonCell().getItem();
 		
-		double rate = RateBLL.getRate(creditScore);
+		try{
+			double rate = RateBLL.getRate(creditScore);
+		}
+		catch(RateException re){
+			System.out.println("RateException: " + re.getMessage());
+			re.printStackTrace();
+		}
 		
 //		double pv = FinanceLib.pv(rate, mortgageTerm, y, 0, false);
 //		
