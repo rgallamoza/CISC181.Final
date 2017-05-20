@@ -1,13 +1,18 @@
 package rocket.app.view;
 
+import org.apache.poi.ss.formula.functions.FinanceLib;
+
 import eNums.eAction;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import rocket.app.MainApp;
+import rocketBase.RateBLL;
 import rocketCode.Action;
 import rocketData.LoanRequest;
 
@@ -17,7 +22,18 @@ public class MortgageController {
 	@FXML TextField txtExpenses;
 	@FXML TextField txtCreditScore;
 	@FXML TextField txtHouseCost;
-	@FXML TextField txtMortgageAmt;
+	@FXML TextField txtDownPayment;
+	
+	@FXML Label lblIncome;
+	@FXML Label lblExpenses;
+	@FXML Label lblCreditScore;
+	@FXML Label lblHouseCost;
+	@FXML Label lblMortgageTerm;
+	@FXML Label lblCalcPayment;
+	@FXML Label lblCalculation;
+	@FXML Label lblDownPayment;
+	
+	@FXML ComboBox<Integer> cmbTerm;
 	
 	private TextField txtNew;
 	
@@ -26,6 +42,8 @@ public class MortgageController {
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		
+		cmbTerm.getItems().addAll(15,30);
 	}
 	
 	
@@ -41,6 +59,17 @@ public class MortgageController {
 		        System.out.println("Pressed OK.");
 		    }
 		});
+		
+		double houseCost = Double.parseDouble(txtHouseCost.getCharacters().toString());
+		int creditScore = Integer.parseInt(txtCreditScore.getCharacters().toString());
+		double downPayment = Double.parseDouble(txtDownPayment.getCharacters().toString());
+		double mortgageTerm = cmbTerm.getButtonCell().getItem();
+		
+		double rate = RateBLL.getRate(creditScore);
+		
+//		double pv = FinanceLib.pv(rate, mortgageTerm, y, 0, false);
+//		
+//		double payment = RateBLL.getPayment(rate, mortgageTerm, p, 0, false);
 	}
 	
 	public void HandleLoanRequestDetails(LoanRequest lRequest)
@@ -50,6 +79,7 @@ public class MortgageController {
 		//			after it's returned back from the server, the payment (dPayment)
 		//			should be calculated.
 		//			Display dPayment on the form, rounded to two decimal places
+		
 		
 	}
 }

@@ -14,4 +14,13 @@ public class RateException extends Exception {
 	public RateException(RateDomainModel ratedm){
 		this.rdm = ratedm;
 	}
+	
+	public RateDomainModel getRdm() {
+		return rdm;
+	}
+
+	public String getMessage(){
+		String emessage = "Your credit score " + rdm.getiMinCreditScore() + " is too low to find an interest rate.";
+		return emessage;
+	}
 }
