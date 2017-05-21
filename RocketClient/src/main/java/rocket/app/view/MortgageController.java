@@ -66,17 +66,37 @@ public class MortgageController {
 	@FXML
 	public void btnCalculatePayment(ActionEvent event)
 	{
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Message Here...");
-		alert.setHeaderText("Look, an Information Dialog");
-		alert.setContentText(txtNew.getText());
-		alert.showAndWait().ifPresent(rs -> {
-		    if (rs == ButtonType.OK) {
-		        System.out.println("Pressed OK.");
-		    }
-		});
+//		Alert alert = new Alert(AlertType.INFORMATION);
+//		alert.setTitle("Message Here...");
+//		alert.setHeaderText("Look, an Information Dialog");
+//		alert.setContentText(txtNew.getText());
+//		alert.showAndWait().ifPresent(rs -> {
+//		    if (rs == ButtonType.OK) {
+//		        System.out.println("Pressed OK.");
+//		    }
+//		});
 		
+		LoanRequest lrequest = new LoanRequest();
 		
+		double houseCost = Double.parseDouble(txtHouseCost.getCharacters().toString());
+		lrequest.setdAmount(houseCost);
+		
+		int creditScore = Integer.parseInt(txtCreditScore.getCharacters().toString());
+		lrequest.setiCreditScore(creditScore);
+		
+		int downPayment = Integer.parseInt(txtDownPayment.getCharacters().toString());
+		lrequest.setiDownPayment(downPayment);
+		
+		int mortgageTerm = cmbTerm.getValue();
+		lrequest.setiTerm(mortgageTerm*12);
+		
+		double Income = Double.parseDouble(txtIncome.getCharacters().toString());
+		lrequest.setIncome(Income/12);
+		
+		double Expenses = Double.parseDouble(txtExpenses.getCharacters().toString());
+		lrequest.setExpenses(Expenses);
+		
+		HandleLoanRequestDetails(lrequest);
 	}
 	
 	public void HandleLoanRequestDetails(LoanRequest lRequest)
@@ -87,18 +107,20 @@ public class MortgageController {
 		//			should be calculated.
 		//			Display dPayment on the form, rounded to two decimal places
 		
-		double houseCost = Double.parseDouble(txtHouseCost.getCharacters().toString());
-		
-		int creditScore = Integer.parseInt(txtCreditScore.getCharacters().toString());
-		
-		double downPayment = Double.parseDouble(txtDownPayment.getCharacters().toString());
-		
-		double mortgageTerm = cmbTerm.getButtonCell().getItem();
-		
 		double rate = 0;
 		
-		double piti28 = (lRequest.getIncome()/12)*0.28;
-		double piti36 = ((lRequest.getIncome()/12)*0.36)-lRequest.getExpenses();
+		try{
+			rate = RateBLL.getRate(lRequest.getiCreditScore());
+		}
+		catch(RateException re){
+			System.out.println("RateException: " + re.getMessage());
+			re.printStackTrace();
+		}
+		
+		double payment = RateBLL.getPayment(rate/1200, lRequest.getiTerm(), lRequest.getdAmount()-lRequest.getiDownPayment(), 0, false)*-1;
+		
+		double piti28 = (lRequest.getIncome())*0.28;
+		double piti36 = ((lRequest.getIncome())*0.36)-lRequest.getExpenses();
 		
 		double piti = 0;
 		if(piti28<piti36){
@@ -107,22 +129,11 @@ public class MortgageController {
 		else{
 			piti = piti36;
 		}
-		
-		try{
-			rate = RateBLL.getRate(creditScore);
-		}
-		catch(RateException re){
-			System.out.println("RateException: " + re.getMessage());
-			re.printStackTrace();
-		}
-		
-		double payment = RateBLL.getPayment(rate/1200, mortgageTerm*12, houseCost-downPayment, 0, false)*-1;
-		
 		if(payment>piti){
 			lblCalculation.setText("House Cost too high");
 		}
 		else{
-			lblCalculation.setText(String.format("%.2f",payment));
+			lblCalculation.setText("Your monthly payment: " + String.format("%.2f",payment));
 		}
 	}
 }
