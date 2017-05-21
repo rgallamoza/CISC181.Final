@@ -78,23 +78,17 @@ public class MortgageController {
 		
 		LoanRequest lrequest = new LoanRequest();
 		
-		double houseCost = Double.parseDouble(txtHouseCost.getCharacters().toString());
-		lrequest.setdAmount(houseCost);
-		
-		int creditScore = Integer.parseInt(txtCreditScore.getCharacters().toString());
-		lrequest.setiCreditScore(creditScore);
-		
-		int downPayment = Integer.parseInt(txtDownPayment.getCharacters().toString());
-		lrequest.setiDownPayment(downPayment);
-		
-		int mortgageTerm = cmbTerm.getValue()*12;
-		lrequest.setiTerm(mortgageTerm);
-		
-		double Income = Double.parseDouble(txtIncome.getCharacters().toString())/12;
-		lrequest.setIncome(Income);
-		
-		double Expenses = Double.parseDouble(txtExpenses.getCharacters().toString());
-		lrequest.setExpenses(Expenses);
+		lrequest.setdAmount(Double.parseDouble(txtHouseCost.getCharacters().toString()));
+	
+		lrequest.setiCreditScore(Integer.parseInt(txtCreditScore.getCharacters().toString()));
+
+		lrequest.setiDownPayment(Integer.parseInt(txtDownPayment.getCharacters().toString()));
+
+		lrequest.setiTerm(cmbTerm.getValue()*12);
+
+		lrequest.setIncome(Double.parseDouble(txtIncome.getCharacters().toString())/12);
+
+		lrequest.setExpenses(Double.parseDouble(txtExpenses.getCharacters().toString()));
 		
 		mainApp.messageSend(lrequest);
 	}
