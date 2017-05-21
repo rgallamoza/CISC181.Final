@@ -87,38 +87,21 @@ public class MortgageController {
 		int downPayment = Integer.parseInt(txtDownPayment.getCharacters().toString());
 		lrequest.setiDownPayment(downPayment);
 		
-		int mortgageTerm = cmbTerm.getValue();
-		lrequest.setiTerm(mortgageTerm*12);
+		int mortgageTerm = cmbTerm.getValue()*12;
+		lrequest.setiTerm(mortgageTerm);
 		
-		double Income = Double.parseDouble(txtIncome.getCharacters().toString());
-		lrequest.setIncome(Income/12);
+		double Income = Double.parseDouble(txtIncome.getCharacters().toString())/12;
+		lrequest.setIncome(Income);
 		
 		double Expenses = Double.parseDouble(txtExpenses.getCharacters().toString());
 		lrequest.setExpenses(Expenses);
 		
-		HandleLoanRequestDetails(lrequest);
+		mainApp.messageSend(lrequest);
 	}
 	
 	public void HandleLoanRequestDetails(LoanRequest lRequest)
 	{
-		//	TODO - RocketClient.HandleLoanRequestDetails
-		//			lRequest is an instance of LoanRequest.
-		//			after it's returned back from the server, the payment (dPayment)
-		//			should be calculated.
-		//			Display dPayment on the form, rounded to two decimal places
-		
-		double rate = 0;
-		
-		try{
-			rate = RateBLL.getRate(lRequest.getiCreditScore());
-		}
-		catch(RateException re){
-			System.out.println("RateException: " + re.getMessage());
-			re.printStackTrace();
-		}
-		
-		double payment = RateBLL.getPayment(rate/1200, lRequest.getiTerm(), lRequest.getdAmount()-lRequest.getiDownPayment(), 0, false)*-1;
-		
+
 		double piti28 = (lRequest.getIncome())*0.28;
 		double piti36 = ((lRequest.getIncome())*0.36)-lRequest.getExpenses();
 		
@@ -129,11 +112,15 @@ public class MortgageController {
 		else{
 			piti = piti36;
 		}
-		if(payment>piti){
-			lblCalculation.setText("House Cost too high");
+		
+		if(lRequest.getdRate()==0){
+			lblCalculation.setText("Your Credit Score is too low.");
+		}
+		else if(lRequest.getdPayment()>piti){
+			lblCalculation.setText("House Cost too high.");
 		}
 		else{
-			lblCalculation.setText("Your monthly payment: " + String.format("%.2f",payment));
+			lblCalculation.setText("Your monthly payment: " + String.format("%.2f",lRequest.getdPayment()));
 		}
 	}
 }

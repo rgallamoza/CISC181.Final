@@ -13,12 +13,6 @@ public class LoanRequest implements Serializable {
 	private double income;
 	private double expenses;
 	
-	//	TODO - RocketBLL.LoanRequest
-	//			missing attributes...
-	//			Income
-	//			Expenses
-	//			Add these attributes to the class... add getters and setters.
-	
 	public LoanRequest() {
 		super();
 	}
