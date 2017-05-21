@@ -66,15 +66,17 @@ public class MortgageController {
 	@FXML
 	public void btnCalculatePayment(ActionEvent event)
 	{
-//		Alert alert = new Alert(AlertType.INFORMATION);
-//		alert.setTitle("Message Here...");
-//		alert.setHeaderText("Look, an Information Dialog");
-//		alert.setContentText(txtNew.getText());
-//		alert.showAndWait().ifPresent(rs -> {
-//		    if (rs == ButtonType.OK) {
-//		        System.out.println("Pressed OK.");
-//		    }
-//		});
+		// The block of commented code was giving me an error.. idk why :(
+		
+/*		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Message Here...");
+		alert.setHeaderText("Look, an Information Dialog");
+		alert.setContentText(txtNew.getText());
+		alert.showAndWait().ifPresent(rs -> {
+		    if (rs == ButtonType.OK) {
+		        System.out.println("Pressed OK.");
+		    }
+		});*/
 		
 		LoanRequest lrequest = new LoanRequest();
 		
