@@ -19,23 +19,38 @@ import rocketData.LoanRequest;
 
 public class MortgageController {
 
-	@FXML TextField txtIncome;
-	@FXML TextField txtExpenses;
-	@FXML TextField txtCreditScore;
-	@FXML TextField txtHouseCost;
-	@FXML TextField txtDownPayment;
+	@FXML
+	private TextField txtIncome;
+	@FXML 
+	private TextField txtExpenses;
+	@FXML
+	private TextField txtCreditScore;
+	@FXML 
+	private TextField txtHouseCost;
+	@FXML 
+	private TextField txtDownPayment;
 	
-	@FXML Label lblIncome;
-	@FXML Label lblExpenses;
-	@FXML Label lblCreditScore;
-	@FXML Label lblHouseCost;
-	@FXML Label lblMortgageTerm;
-	@FXML Label lblCalcPayment;
-	@FXML Label lblCalculation;
-	@FXML Label lblDownPayment;
+	@FXML 
+	private Label lblIncome;
+	@FXML 
+	private Label lblExpenses;
+	@FXML 
+	private Label lblCreditScore;
+	@FXML 
+	private Label lblHouseCost;
+	@FXML 
+	private Label lblMortgageTerm;
+	@FXML 
+	private Label lblCalcPayment;
+	@FXML 
+	private Label lblCalculation;
+	@FXML 
+	private Label lblDownPayment;
 	
-	@FXML ComboBox<Integer> cmbTerm;
+	@FXML 
+	private ComboBox<Integer> cmbTerm;
 	
+	@FXML
 	private TextField txtNew;
 	
 	private MainApp mainApp;
@@ -61,22 +76,7 @@ public class MortgageController {
 		    }
 		});
 		
-		double houseCost = Double.parseDouble(txtHouseCost.getCharacters().toString());
-		int creditScore = Integer.parseInt(txtCreditScore.getCharacters().toString());
-		double downPayment = Double.parseDouble(txtDownPayment.getCharacters().toString());
-		double mortgageTerm = cmbTerm.getButtonCell().getItem();
 		
-		try{
-			double rate = RateBLL.getRate(creditScore);
-		}
-		catch(RateException re){
-			System.out.println("RateException: " + re.getMessage());
-			re.printStackTrace();
-		}
-		
-//		double pv = FinanceLib.pv(rate, mortgageTerm, y, 0, false);
-//		
-//		double payment = RateBLL.getPayment(rate, mortgageTerm, p, 0, false);
 	}
 	
 	public void HandleLoanRequestDetails(LoanRequest lRequest)
@@ -87,6 +87,42 @@ public class MortgageController {
 		//			should be calculated.
 		//			Display dPayment on the form, rounded to two decimal places
 		
+		double houseCost = Double.parseDouble(txtHouseCost.getCharacters().toString());
 		
+		int creditScore = Integer.parseInt(txtCreditScore.getCharacters().toString());
+		
+		double downPayment = Double.parseDouble(txtDownPayment.getCharacters().toString());
+		
+		double mortgageTerm = cmbTerm.getButtonCell().getItem();
+		
+		double rate = 0;
+		
+		double piti28 = (lRequest.getIncome()/12)*0.28;
+		double piti36 = ((lRequest.getIncome()/12)*0.36)-lRequest.getExpenses();
+		
+		double piti = 0;
+		if(piti28<piti36){
+			piti = piti28;
+		}
+		else{
+			piti = piti36;
+		}
+		
+		try{
+			rate = RateBLL.getRate(creditScore);
+		}
+		catch(RateException re){
+			System.out.println("RateException: " + re.getMessage());
+			re.printStackTrace();
+		}
+		
+		double payment = RateBLL.getPayment(rate/1200, mortgageTerm*12, houseCost-downPayment, 0, false)*-1;
+		
+		if(payment>piti){
+			lblCalculation.setText("House Cost too high");
+		}
+		else{
+			lblCalculation.setText(String.format("%.2f",payment));
+		}
 	}
 }

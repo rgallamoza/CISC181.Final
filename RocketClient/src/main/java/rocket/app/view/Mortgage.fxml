@@ -38,7 +38,7 @@
             <TextField fx:id="txtExpenses" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="txtIncome" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <ComboBox fx:id="cmbTerm" prefWidth="150.0" visibleRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Label fx:id="lblCalculation" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label fx:id="lblCalculation" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="txtCreditScore" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="lblDownPayment" text="Down Payment" GridPane.rowIndex="1" />
             <TextField fx:id="txtDownPayment" GridPane.columnIndex="1" GridPane.rowIndex="1" />
